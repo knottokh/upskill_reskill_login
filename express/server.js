@@ -17,9 +17,9 @@ app.use(bodyParser.json());
 app.use('/', express.static(path.join(__dirname, 'dist')));
 
 app.post('/login', function(req, res) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
+  // res.header("Access-Control-Allow-Origin", "*");
+  // res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  // res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
 
   if (!(req.body.username === 'john.doe' && req.body.password === 'foobar')) {
     res.status(401).send('Wrong user or password');
@@ -42,9 +42,9 @@ app.use(function(err, req, res, next){
 });
 
 app.get('/api/profile', function (req, res) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
+  // res.header("Access-Control-Allow-Origin", "*");
+  // res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  // res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
   console.log('user ' + req.user.firstname + ' is calling /api/profile');
   res.json({
     name: req.user.firstname
