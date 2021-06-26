@@ -75,16 +75,16 @@ const expressJwt = require('express-jwt'); //https://npmjs.org/package/express-j
 const router = express.Router();
 
 var secret = 'This is the secret for signing tokens';
-// router.get('/', (req, res) => {
-//   //console.log('ok');
-//   res.sendFile(path.join(__dirname, '../dist/homepage.html'));
-// });
-
 router.get('/', (req, res) => {
-  res.writeHead(200, { 'Content-Type': 'text/html' });
-  res.write('<h1>Hello from Express.js!</h1>');
-  res.end();
+  //console.log('ok');
+  res.sendFile(path.join(__dirname, '../dist/homepage.html'));
 });
+
+// router.get('/', (req, res) => {
+//   res.writeHead(200, { 'Content-Type': 'text/html' });
+//   res.write('<h1>Hello from Express.js!</h1>');
+//   res.end();
+// });
 
 
 // router.post('/login', (req, res) => {
