@@ -16,6 +16,19 @@ app.use(bodyParser.json());
 // app.use('/', express.static(__dirname + '/'));
 app.use('/', express.static(path.join(__dirname, 'dist')));
 
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  if (req.method === "OPTIONS") {
+    res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
+    return res.status(200).json({});
+  }
+  next();
+});
+
 app.post('/login', function(req, res) {
   if (!(req.body.username === 'john.doe' && req.body.password === 'foobar')) {
     res.status(401).send('Wrong user or password');
