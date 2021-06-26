@@ -11,7 +11,8 @@ var secret = 'This is the secret for signing tokens';
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use('/', express.static(__dirname + '/'));
+// app.use('/', express.static(__dirname + '/'));
+app.use('/', express.static(path.join(__dirname, 'dist')));
 
 app.post('/login', function(req, res) {
   if (!(req.body.username === 'john.doe' && req.body.password === 'foobar')) {
