@@ -57,5 +57,25 @@ app.get('/api/profile', function (req, res) {
   });
 });
 
+app.use((req, res, next) => {
+  //const error = new Error("Not found");
+  //error.status = 404;
+  //next(error);
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
+  res.sendFile(path.join(__dirname, 'dist/index.html'));
+});
+
+app.use((error, req, res, next) => {
+  //res.sendFile(path.join(__dirname, 'dist/index.html'));
+  res.status(error.status || 500);
+  res.json({
+    error: {
+      message: error.message
+    }
+  });
+});
+
 module.exports = app;
 module.exports.handler = serverless(app);
