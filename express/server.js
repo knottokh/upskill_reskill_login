@@ -67,7 +67,7 @@
 const express = require('express');
 const serverless = require('serverless-http');
 const bodyParser = require('body-parser');
-const cors = require('cors');
+//const cors = require('cors');
 const path = require('path');
 const app = express();
 //const jwt = require('jsonwebtoken');  //https://npmjs.org/package/node-jsonwebtoken
@@ -82,7 +82,7 @@ var secret = 'This is the secret for signing tokens';
 
 router.get('/', (req, res) => {
   res.writeHead(200, { 'Content-Type': 'text/html' });
-  res.write('<h1>Hello from Express.js!</h1>');
+  res.write('<h1>Hello Home from Express.js!</h1>');
   res.end();
 });
 
@@ -123,7 +123,7 @@ app.use(function(err, req, res, next){
 });
 
 
-app.use(cors());
+// app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
