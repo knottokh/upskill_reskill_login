@@ -65,12 +65,16 @@
 
 'use strict';
 const express = require('express');
-const path = require('path');
 const serverless = require('serverless-http');
-const app = express();
 const bodyParser = require('body-parser');
-
+const cors = require('cors');
+const path = require('path');
+const app = express();
+const jwt = require('jsonwebtoken');  //https://npmjs.org/package/node-jsonwebtoken
+const expressJwt = require('express-jwt'); //https://npmjs.org/package/express-jwt
 const router = express.Router();
+
+var secret = 'This is the secret for signing tokens';
 // router.get('/', (req, res) => {
 //   //console.log('ok');
 //   res.sendFile(path.join(__dirname, '../dist/homepage.html'));
@@ -83,36 +87,36 @@ router.get('/', (req, res) => {
 });
 
 
-router.post('/login', (req, res) => {
-  if (!(req.body.username === 'john.doe' && req.body.password === 'foobar')) {
-    res.status(401).send('Wrong user or password');
-    console.log('failed login');
-    return;
-  }
-  console.log('successful login');
-  // We are sending the profile inside the token
-  var token = jwt.sign({ firstname: 'John', lastname: 'Doe'}, secret, { expiresIn: 5 * 60 });
-  res.json({ token: token });
-});
+// router.post('/login', (req, res) => {
+//   if (!(req.body.username === 'john.doe' && req.body.password === 'foobar')) {
+//     res.status(401).send('Wrong user or password');
+//     console.log('failed login');
+//     return;
+//   }
+//   console.log('successful login');
+//   // We are sending the profile inside the token
+//   var token = jwt.sign({ firstname: 'John', lastname: 'Doe'}, secret, { expiresIn: 5 * 60 });
+//   res.json({ token: token });
+// });
 
 
-router.get('/api/profile',  (req, res) => {
-  console.log('user ' + req.user.firstname + ' is calling /api/profile');
-  res.json({
-    name: req.user.firstname
-  });
-});
+// router.get('/api/profile',  (req, res) => {
+//   console.log('user ' + req.user.firstname + ' is calling /api/profile');
+//   res.json({
+//     name: req.user.firstname
+//   });
+// });
 
-app.use('/api', expressJwt({secret: secret}));
+// app.use('/api', expressJwt({secret: secret}));
 
-app.use(function(err, req, res, next){
-  if (err.constructor.name === 'UnauthorizedError') {
-    res.status(401).send('Unauthorized');
-  }
-});
+// app.use(function(err, req, res, next){
+//   if (err.constructor.name === 'UnauthorizedError') {
+//     res.status(401).send('Unauthorized');
+//   }
+// });
 
 
-app.use(cors());
+//app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
