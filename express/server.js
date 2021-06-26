@@ -3,12 +3,14 @@
 var express = require('express');
 const serverless = require('serverless-http');
 var bodyParser = require('body-parser');
+const cors = require('cors');
 var app = express();
 var jwt = require('jsonwebtoken');  //https://npmjs.org/package/node-jsonwebtoken
 var expressJwt = require('express-jwt'); //https://npmjs.org/package/express-jwt
 
 var secret = 'This is the secret for signing tokens';
 
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 // app.use('/', express.static(__dirname + '/'));
