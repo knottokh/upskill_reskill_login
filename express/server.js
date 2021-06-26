@@ -13,14 +13,10 @@ var secret = 'This is the secret for signing tokens';
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-// app.use('/', express.static(__dirname + '/'));
-app.use('/', express.static(path.join(__dirname, 'dist')));
+app.use('/', express.static(__dirname + '/dist'));
+//app.use('/', express.static(path.join(__dirname, 'dist')));
 
 app.post('/login', function(req, res) {
-  // res.header("Access-Control-Allow-Origin", "*");
-  // res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  // res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
-
   if (!(req.body.username === 'john.doe' && req.body.password === 'foobar')) {
     res.status(401).send('Wrong user or password');
     console.log('failed login');
@@ -42,9 +38,6 @@ app.use(function(err, req, res, next){
 });
 
 app.get('/api/profile', function (req, res) {
-  // res.header("Access-Control-Allow-Origin", "*");
-  // res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  // res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
   console.log('user ' + req.user.firstname + ' is calling /api/profile');
   res.json({
     name: req.user.firstname
