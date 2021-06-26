@@ -8,6 +8,7 @@ const path = require('path');
 var app = express();
 var jwt = require('jsonwebtoken');  //https://npmjs.org/package/node-jsonwebtoken
 var expressJwt = require('express-jwt'); //https://npmjs.org/package/express-jwt
+const router = express.Router();
 
 var secret = 'This is the secret for signing tokens';
 
@@ -17,7 +18,7 @@ app.use(bodyParser.json());
 //app.use('/', express.static(__dirname + '/dist'));
 app.use('/', express.static(path.join(__dirname, 'dist')));
 
-app.post('/login', function(req, res) {
+router.post('/login', function(req, res) {
   if (!(req.body.username === 'john.doe' && req.body.password === 'foobar')) {
     res.status(401).send('Wrong user or password');
     console.log('failed login');
@@ -38,13 +39,15 @@ app.use(function(err, req, res, next){
   }
 });
 
-app.get('/api/profile', function (req, res) {
+router.get('/api/profile', function (req, res) {
   console.log('user ' + req.user.firstname + ' is calling /api/profile');
   res.json({
     name: req.user.firstname
   });
 });
 
+app.use('/.netlify/functions/server', router);  // path must route to lambda
+app.use('/', router);
 app.get('*', (req, res) => {
   //console.log('ok');
   res.sendFile(path.join(__dirname, '../dist/index.html'));
