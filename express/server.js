@@ -48,10 +48,12 @@ router.get('/api/profile', function (req, res) {
 
 app.use('/.netlify/functions/server', router);  // path must route to lambda
 app.use('/', router);
-app.get('*', (req, res) => {
+app.get('/home', (req, res) => {
   //console.log('ok');
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
+app.use('/', (req, res) => res.sendFile(path.join(__dirname, '../dist/index2.html')));
+
 
 module.exports = app;
 module.exports.handler = serverless(app);
