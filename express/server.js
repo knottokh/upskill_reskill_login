@@ -71,10 +71,17 @@ const app = express();
 const bodyParser = require('body-parser');
 
 const router = express.Router();
+// router.get('/', (req, res) => {
+//   //console.log('ok');
+//   res.sendFile(path.join(__dirname, '../dist/homepage.html'));
+// });
+
 router.get('/', (req, res) => {
-  //console.log('ok');
-  res.sendFile(path.join(__dirname, '../dist/homepage.html'));
+  res.writeHead(200, { 'Content-Type': 'text/html' });
+  res.write('<h1>Hello from Express.js!</h1>');
+  res.end();
 });
+
 
 router.post('/login', (req, res) => {
   if (!(req.body.username === 'john.doe' && req.body.password === 'foobar')) {
