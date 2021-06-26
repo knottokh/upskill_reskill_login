@@ -87,6 +87,13 @@ router.get('/', (req, res) => {
   res.end();
 });
 
+router.get('/data2', (req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/html' });
+  res.write('<h1>Hello Data2 from Express.js!</h1>');
+  res.end();
+});
+
+
 
 router.post('/login', (req, res) => {
   if (!(req.body.username === 'john.doe' && req.body.password === 'foobar')) {
