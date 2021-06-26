@@ -76,7 +76,7 @@ const router = express.Router();
 
 var secret = 'This is the secret for signing tokens';
 
-app.use('/', express.static(path.join(__dirname, 'dist')));
+// app.use('/', express.static(path.join(__dirname, 'dist')));
 
 // router.get('/', (req, res) => {
 //   //console.log('ok');
