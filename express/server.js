@@ -65,73 +65,23 @@
 
 'use strict';
 const express = require('express');
-const serverless = require('serverless-http');
-const bodyParser = require('body-parser');
-//const cors = require('cors');
 const path = require('path');
+const serverless = require('serverless-http');
 const app = express();
-//const jwt = require('jsonwebtoken');  //https://npmjs.org/package/node-jsonwebtoken
-//const expressJwt = require('express-jwt'); //https://npmjs.org/package/express-jwt
+const bodyParser = require('body-parser');
+
 const router = express.Router();
-
-var secret = 'This is the secret for signing tokens';
-
-// app.use('/', express.static(path.join(__dirname, 'dist')));
-
-// router.get('/', (req, res) => {
-//   //console.log('ok');
-//   res.sendFile(path.join(__dirname, '../dist/homepage.html'));
-// });
-
 router.get('/', (req, res) => {
   res.writeHead(200, { 'Content-Type': 'text/html' });
-  res.write('<h1>Hello Home from Express.js!</h1>');
+  res.write('<h1>Hello  Home from Express.js!</h1>');
   res.end();
 });
+router.get('/another', (req, res) => res.json({ route: req.originalUrl }));
+router.post('/', (req, res) => res.json({ postBody: req.body }));
 
-router.get('/data2', (req, res) => {
-  res.writeHead(200, { 'Content-Type': 'text/html' });
-  res.write('<h1>Hello Data2 from Express.js!</h1>');
-  res.end();
-});
-
-
-
-// router.post('/login', (req, res) => {
-//   if (!(req.body.username === 'john.doe' && req.body.password === 'foobar')) {
-//     res.status(401).send('Wrong user or password');
-//     console.log('failed login');
-//     return;
-//   }
-//   console.log('successful login');
-//   // We are sending the profile inside the token
-//   var token = jwt.sign({ firstname: 'John', lastname: 'Doe'}, secret, { expiresIn: 5 * 60 });
-//   res.json({ token: token });
-// });
-
-
-// router.get('/api/profile',  (req, res) => {
-//   console.log('user ' + req.user.firstname + ' is calling /api/profile');
-//   res.json({
-//     name: req.user.firstname
-//   });
-// });
-
-// app.use('/api', expressJwt({secret: secret}));
-
-app.use(function(err, req, res, next){
-  if (err.constructor.name === 'UnauthorizedError') {
-    res.status(401).send('Unauthorized');
-  }
-});
-
-
-// app.use(cors());
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
 app.use('/.netlify/functions/server', router);  // path must route to lambda
-app.use('/', (req, res) => res.sendFile(path.join(__dirname, '../index.html')));
+app.use('/', (req, res) => res.sendFile(path.join(__dirname, '../dist/index.html')));
 
 module.exports = app;
 module.exports.handler = serverless(app);
