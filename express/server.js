@@ -75,6 +75,9 @@ const app = express();
 const router = express.Router();
 
 var secret = 'This is the secret for signing tokens';
+
+app.use('/', express.static(path.join(__dirname, 'dist')));
+
 // router.get('/', (req, res) => {
 //   //console.log('ok');
 //   res.sendFile(path.join(__dirname, '../dist/homepage.html'));
@@ -128,7 +131,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use('/.netlify/functions/server', router);  // path must route to lambda
-app.use('/', (req, res) => res.sendFile(path.join(__dirname, '../dist/index.html')));
+app.use('/', (req, res) => res.sendFile(path.join(__dirname, '../index.html')));
 
 module.exports = app;
 module.exports.handler = serverless(app);
