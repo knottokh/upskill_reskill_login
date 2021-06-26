@@ -73,10 +73,10 @@ const bodyParser = require('body-parser');
 const router = express.Router();
 router.get('/', (req, res) => {
   //console.log('ok');
-  res.sendFile(path.join(__dirname, '../dist/index3.html'));
+  res.sendFile(path.join(__dirname, '../dist/homepage.html'));
 });
 
-router.post('/login', function(req, res) {
+router.post('/login', (req, res) => {
   if (!(req.body.username === 'john.doe' && req.body.password === 'foobar')) {
     res.status(401).send('Wrong user or password');
     console.log('failed login');
@@ -89,7 +89,7 @@ router.post('/login', function(req, res) {
 });
 
 
-router.get('/api/profile', function (req, res) {
+router.get('/api/profile',  (req, res) => {
   console.log('user ' + req.user.firstname + ' is calling /api/profile');
   res.json({
     name: req.user.firstname
@@ -110,7 +110,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use('/.netlify/functions/server', router);  // path must route to lambda
-app.use('/', (req, res) => res.sendFile(path.join(__dirname, '../dist/index2.html')));
+app.use('/', (req, res) => res.sendFile(path.join(__dirname, '../dist/index.html')));
 
 module.exports = app;
 module.exports.handler = serverless(app);
