@@ -4,6 +4,7 @@ var express = require('express');
 const serverless = require('serverless-http');
 var bodyParser = require('body-parser');
 const cors = require('cors');
+const path = require('path');
 var app = express();
 var jwt = require('jsonwebtoken');  //https://npmjs.org/package/node-jsonwebtoken
 var expressJwt = require('express-jwt'); //https://npmjs.org/package/express-jwt
@@ -13,8 +14,8 @@ var secret = 'This is the secret for signing tokens';
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use('/', express.static(__dirname + '/dist'));
-//app.use('/', express.static(path.join(__dirname, 'dist')));
+//app.use('/', express.static(__dirname + '/dist'));
+app.use('/', express.static(path.join(__dirname, 'dist')));
 
 app.post('/login', function(req, res) {
   if (!(req.body.username === 'john.doe' && req.body.password === 'foobar')) {
@@ -42,6 +43,11 @@ app.get('/api/profile', function (req, res) {
   res.json({
     name: req.user.firstname
   });
+});
+
+app.get('*', (req, res) => {
+  //console.log('ok');
+  res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
 module.exports = app;
