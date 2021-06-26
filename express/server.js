@@ -46,12 +46,14 @@ router.get('/api/profile', function (req, res) {
   });
 });
 
-app.use('/.netlify/functions/server', router);  // path must route to lambda
-app.use('/', router);
-app.get('/home', (req, res) => {
+router.get('/home', (req, res) => {
   //console.log('ok');
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
+
+app.use('/.netlify/functions/server', router);  // path must route to lambda
+//app.use('/', router);
+
 app.use('/', (req, res) => res.sendFile(path.join(__dirname, '../dist/index2.html')));
 
 
