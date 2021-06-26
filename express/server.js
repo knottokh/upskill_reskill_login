@@ -70,22 +70,21 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 const app = express();
-const jwt = require('jsonwebtoken');  //https://npmjs.org/package/node-jsonwebtoken
-const expressJwt = require('express-jwt'); //https://npmjs.org/package/express-jwt
+//const jwt = require('jsonwebtoken');  //https://npmjs.org/package/node-jsonwebtoken
+//const expressJwt = require('express-jwt'); //https://npmjs.org/package/express-jwt
 const router = express.Router();
 
 var secret = 'This is the secret for signing tokens';
-// router.get('/', (req, res) => {
-//   //console.log('ok');
-//   res.writeHead(200, { 'Content-Type': 'text/html' });
-//   res.sendFile(path.join(__dirname, '../dist/homepage.html'));
-// });
-
 router.get('/', (req, res) => {
-  res.writeHead(200, { 'Content-Type': 'text/html' });
-  res.write('<h1>Hello from Express.js!</h1>');
-  res.end();
+  //console.log('ok');
+  res.sendFile(path.join(__dirname, '../dist/homepage.html'));
 });
+
+// router.get('/', (req, res) => {
+//   res.writeHead(200, { 'Content-Type': 'text/html' });
+//   res.write('<h1>Hello from Express.js!</h1>');
+//   res.end();
+// });
 
 router.get('/data2', (req, res) => {
   res.writeHead(200, { 'Content-Type': 'text/html' });
@@ -95,17 +94,17 @@ router.get('/data2', (req, res) => {
 
 
 
-router.post('/login', (req, res) => {
-  if (!(req.body.username === 'john.doe' && req.body.password === 'foobar')) {
-    res.status(401).send('Wrong user or password');
-    console.log('failed login');
-    return;
-  }
-  console.log('successful login');
-  // We are sending the profile inside the token
-  var token = jwt.sign({ firstname: 'John', lastname: 'Doe'}, secret, { expiresIn: 5 * 60 });
-  res.json({ token: token });
-});
+// router.post('/login', (req, res) => {
+//   if (!(req.body.username === 'john.doe' && req.body.password === 'foobar')) {
+//     res.status(401).send('Wrong user or password');
+//     console.log('failed login');
+//     return;
+//   }
+//   console.log('successful login');
+//   // We are sending the profile inside the token
+//   var token = jwt.sign({ firstname: 'John', lastname: 'Doe'}, secret, { expiresIn: 5 * 60 });
+//   res.json({ token: token });
+// });
 
 
 router.get('/api/profile',  (req, res) => {
@@ -115,7 +114,7 @@ router.get('/api/profile',  (req, res) => {
   });
 });
 
-app.use('/api', expressJwt({secret: secret}));
+// app.use('/api', expressJwt({secret: secret}));
 
 app.use(function(err, req, res, next){
   if (err.constructor.name === 'UnauthorizedError') {
