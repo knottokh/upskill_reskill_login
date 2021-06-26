@@ -12,11 +12,13 @@ const router = express.Router();
 
 var secret = 'This is the secret for signing tokens';
 
-app.use(cors());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
 //app.use('/', express.static(__dirname + '/dist'));
 //app.use('/', express.static(path.join(__dirname, 'dist')));
+
+router.get('/', (req, res) => {
+  //console.log('ok');
+  res.sendFile(path.join(__dirname, '../dist/index.html'));
+});
 
 router.post('/login', function(req, res) {
   if (!(req.body.username === 'john.doe' && req.body.password === 'foobar')) {
@@ -30,14 +32,6 @@ router.post('/login', function(req, res) {
   res.json({ token: token });
 });
 
-// We are going to protect /api routes with JWT
-app.use('/api', expressJwt({secret: secret}));
-
-app.use(function(err, req, res, next){
-  if (err.constructor.name === 'UnauthorizedError') {
-    res.status(401).send('Unauthorized');
-  }
-});
 
 router.get('/api/profile', function (req, res) {
   console.log('user ' + req.user.firstname + ' is calling /api/profile');
@@ -46,15 +40,24 @@ router.get('/api/profile', function (req, res) {
   });
 });
 
-router.get('/home', (req, res) => {
-  //console.log('ok');
-  res.sendFile(path.join(__dirname, '../dist/index.html'));
+app.use('/api', expressJwt({secret: secret}));
+
+app.use(function(err, req, res, next){
+  if (err.constructor.name === 'UnauthorizedError') {
+    res.status(401).send('Unauthorized');
+  }
 });
+
+
+app.use(cors());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.use('/.netlify/functions/server', router);  // path must route to lambda
 //app.use('/', router);
 
 app.use('/', (req, res) => res.sendFile(path.join(__dirname, '../dist/index2.html')));
+// We are going to protect /api routes with JWT
 
 
 module.exports = app;
