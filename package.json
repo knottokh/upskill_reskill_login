@@ -2,10 +2,10 @@
   "name": "javascript-jwt-auth",
   "version": "1.0.0",
   "description": "This is a tutorial example for token authentication using vanilla javascript",
-  "main": "server.js",
+  "main": "functions/server.js",
   "scripts": {
-    "test": "npm install, node server.js",
-    "start": "node server.js"
+    "build": "netlify-lambda build express",
+    "start": "nodemon server-local.js"
   },
   "author": "Chaofeng Zhou",
   "license": "MIT",
@@ -13,6 +13,9 @@
     "body-parser": "^1.14.1",
     "express": "^4.13.3",
     "express-jwt": "^3.3.0",
-    "jsonwebtoken": "^5.4.1"
+    "jsonwebtoken": "^5.4.1",
+    "netlify-lambda": "^1.6.3",
+    "nodemon": "^1.19.2",
+    "serverless-http": "^2.3.0"
   }
 }
