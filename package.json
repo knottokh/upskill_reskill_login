@@ -1,5 +1,5 @@
 {
-  "name": "javascript-jwt-auth",
+  "name": "upskill_reskill_login",
   "version": "1.0.0",
   "description": "This is a tutorial example for token authentication using vanilla javascript",
   "main": "functions/server.js",
@@ -10,10 +10,10 @@
   "author": "Chaofeng Zhou",
   "license": "MIT",
   "dependencies": {
-    "body-parser": "^1.14.1",
-    "express": "^4.13.3",
     "express-jwt": "^3.3.0",
     "jsonwebtoken": "^5.4.1",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
     "netlify-lambda": "^1.6.3",
     "nodemon": "^1.19.2",
     "serverless-http": "^2.3.0"
