@@ -15,13 +15,13 @@ const UserModel = require("./model/user");
 var secret = 'XYZLQ3M0RKe6Bz6tYtU';
 var mogoUrl = 'mongodb+srv://dbTedstat:YJKFeWzy3NrmyTw2@tedstat-wvyih.mongodb.net/test?retryWrites=true';
 
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 
 
-//mongoose.Promise = global.Promise;
-mongoose.connect( mogoUrl,
-    { useNewUrlParser: true }
-);
+// //mongoose.Promise = global.Promise;
+// mongoose.connect( mogoUrl,
+//     { useNewUrlParser: true }
+// );
 
 
 
@@ -44,20 +44,29 @@ router.get('/', (req, res) => {
 
 
 router.post('/login', function (req, res) {
-  UserModel.findOne({
-    username: req.body.username,
-    password: req.body.password
-  }).exec(function (err, user) {
-    if (!err && user) {
-      let token = jwt.sign({ username: user.username }
-        , secret, { expiresIn: "1d" });
-      // user.token = token;
-      // user.save();
-      res.json({ token: token });
-    } else {
-      res.status(401).send('Wrong user or password');
-    }
-  });
+  // UserModel.findOne({
+  //   username: req.body.username,
+  //   password: req.body.password
+  // }).exec(function (err, user) {
+  //   if (!err && user) {
+  //     let token = jwt.sign({ username: user.username }
+  //       , secret, { expiresIn: "1d" });
+  //     // user.token = token;
+  //     // user.save();
+  //     res.json({ token: token });
+  //   } else {
+  //     res.status(401).send('Wrong user or password');
+  //   }
+  // });
+  if (!(req.body.username === 'john.doe' && req.body.password === 'foobar')) {
+    res.status(401).send('Wrong user or password');
+    console.log('failed login');
+    return;
+  }
+  console.log('successful login');
+  // We are sending the profile inside the token
+  var token = jwt.sign({ firstname: 'John', lastname: 'Doe'}, secret, { expiresIn: 5 * 60 });
+  res.json({ token: token });
 });
 
 
