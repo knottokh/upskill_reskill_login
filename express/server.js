@@ -9,9 +9,19 @@ var app = express();
 var jwt = require('jsonwebtoken');  //https://npmjs.org/package/node-jsonwebtoken
 var expressJwt = require('express-jwt'); //https://npmjs.org/package/express-jwt
 const router = express.Router();
+const checkAuth = require('./check-auth');
+const UserModel = require("./model/user");
 
-var secret = 'This is the secret for signing tokens';
+var secret = 'XYZLQ3M0RKe6Bz6tYtU';
+var mogoUrl = 'mongodb+srv://dbTedstat:YJKFeWzy3NrmyTw2@tedstat-wvyih.mongodb.net/test?retryWrites=true';
 
+const mongoose = require("mongoose");
+
+
+//mongoose.Promise = global.Promise;
+mongoose.connect( mogoUrl,
+    { useNewUrlParser: true }
+);
 
 
 
@@ -33,30 +43,38 @@ router.get('/', (req, res) => {
 });
 
 
-router.post('/login', function(req, res) {
-  if (!(req.body.username === 'john.doe' && req.body.password === 'foobar')) {
-    res.status(401).send('Wrong user or password');
-    console.log('failed login');
-    return;
-  }
-  console.log('successful login');
-  // We are sending the profile inside the token
-  var token = jwt.sign({ firstname: 'John', lastname: 'Doe'}, secret, { expiresIn: 5 * 60 });
-  res.json({ token: token });
-});
-
-
-router.get('/api/profile', function (req, res) {
-  console.log('user ' + req.user.firstname + ' is calling /api/profile');
-  res.json({
-    name: req.user.firstname
+router.post('/login', function (req, res) {
+  UserModel.findOne({
+    username: req.body.username,
+    password: req.body.password
+  }).exec(function (err, user) {
+    if (!err && user) {
+      let token = jwt.sign({ username: user.username }
+        , secret, { expiresIn: "1d" });
+      // user.token = token;
+      // user.save();
+      res.json({ token: token });
+    } else {
+      res.status(401).send('Wrong user or password');
+    }
   });
 });
 
-// We are going to protect /api routes with JWT
-app.use('/api', expressJwt({secret: secret}));
 
-app.use(function(err, req, res, next){
+router.get('/api/profile', checkAuth, function (req, res) {
+  // console.log('user ' + req.user.firstname + ' is calling /api/profile');
+  // res.json({
+  //   name: req.user.firstname
+  // });
+  res.json({
+    status: "Auth Success"
+  })
+});
+
+// We are going to protect /api routes with JWT
+//app.use('/api', expressJwt({secret: secret}));
+
+app.use(function (err, req, res, next) {
   if (err.constructor.name === 'UnauthorizedError') {
     res.status(401).send('Unauthorized');
   }
